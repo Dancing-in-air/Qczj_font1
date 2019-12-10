@@ -57,17 +57,38 @@ class QiCheZhiJiaSpider:
 
             word = TTFont('./word.ttf')
 
-            # 读取响应的映射关系,获取unicode映射值
+            # 读取响应的映射关系,获取unicode编码
+
+            # 'cmap' 表示汉字对应的映射 为unicode编码
 
             uni_list = word['cmap'].tables[0].ttFont.getGlyphOrder()
 
-            print(uni_list)
+            # 按顺序拿到各个字符的unicode编码
 
-            # 将映射值重新构造!这样就可以与响应中的编码相匹配
+            print(uni_list)
+            """
+            结果为:.notdef 并不是汉字的映射， 而是表示字体家族名称
+            ['.notdef', 'uniEC5F', 'uniEDA0', 'uniECED', 'uniED3E', 'uniEC8B', 'uniECDD', 'uniEC29', 'uniED6A',
+             'uniEDBC', 'uniED08', 'uniEC55', 'uniECA7', 'uniEDE7', 'uniEC45', 'uniED86', 'uniECD2', 'uniED24',
+             'uniEC71', 'uniEDB1', 'uniEE03', 'uniED50', 'uniEDA2', 'uniECEE', 'uniEC3B', 'uniEC8D', 'uniEDCD',
+             'uniED1A', 'uniED6C', 'uniECB8', 'uniED0A', 'uniEC57', 'uniED97', 'uniEDE9', 'uniED36', 'uniEC82',
+             'uniECD4', 'uniEC21', 'uniEC72']
+             """
+
+            # 将映射列表转换成unicode的类型，因为自己文中获取的是字符串unicode类
+            # 型的，当然你也可以转化为utf-8,不过你获取的文章内容也要转化为utf-8
 
             unicode_list = [eval(r"u'\u" + uni[3:] + "'") for uni in uni_list[1:]]
 
             print(unicode_list)
+            """
+            结果为:
+            ['\uec5f', '\ueda0', '\ueced', '\ued3e', '\uec8b', '\uecdd', '\uec29', '\ued6a', '\uedbc', '\ued08',
+             '\uec55', '\ueca7', '\uede7', '\uec45', '\ued86', '\uecd2', '\ued24', '\uec71', '\uedb1', '\uee03',
+             '\ued50', '\ueda2', '\uecee', '\uec3b', '\uec8d', '\uedcd', '\ued1a', '\ued6c', '\uecb8', '\ued0a',
+             '\uec57', '\ued97', '\uede9', '\ued36', '\uec82', '\uecd4', '\uec21', '\uec72']
+
+            """
 
             # 通过fontcreator软件查看获取word.ttf中的字体!该字体网站会隔一段时间变更,所以每次需要查看一下
 
@@ -85,6 +106,7 @@ class QiCheZhiJiaSpider:
 
 
 if __name__ == '__main__':
+
     spider = QiCheZhiJiaSpider()
 
     spider.article_content()
