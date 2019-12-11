@@ -8,6 +8,7 @@ import requests
 from scrapy import Selector
 
 from fontTools.ttLib import TTFont
+
 from pprint import pprint
 
 
